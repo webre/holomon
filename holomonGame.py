@@ -1830,7 +1830,7 @@ class Card(Item):
         modCatchRate = (3 * holomon.getStat('hp') - 2 * holomon.currentHP) * \
             holomon.catchRate * self.multiplier / (3.0 * holomon.getStat('hp'))
         probability = modCatchRate / 255.0
-        print probability
+        
         if random.random() <= probability:
             return True
         else:
