@@ -33,7 +33,7 @@ class Config:
     @staticmethod
     def loadAllBlocks():
         Game.allBlocks = dict()
-        blocks = open(Config.datPath + 'blockimages.dat')
+        blocks = open(Config.datPath + 'blockimages.dat', 'rU')
 
         for line in blocks:
             words = line.split()
@@ -41,7 +41,7 @@ class Config:
             Game.allBlocks[words[0]] = Block(Config.blockPath + words[1])
 
         blocks.close()
-        tallgrasses = open(Config.datPath + 'tallgrasses.dat')
+        tallgrasses = open(Config.datPath + 'tallgrasses.dat', 'rU')
         
         for line in tallgrasses:
             words = line.split()
@@ -63,7 +63,7 @@ class Config:
         Game.allBlockItems = dict()
 
         # load name and image of all block items
-        blockItems = open(Config.datPath + 'blockitemimages.dat')
+        blockItems = open(Config.datPath + 'blockitemimages.dat', 'rU')
         for line in blockItems:
             words = line.split()
             Game.allBlockItems[words[0]] = BlockItem(Config.blockItemPath + \
@@ -72,7 +72,7 @@ class Config:
         blockItems.close()
 
         # load defined signs
-        signs = open(Config.datPath + 'signtext.dat')
+        signs = open(Config.datPath + 'signtext.dat', 'rU')
         for line in signs:
             words = line.split()
             Game.allBlockItems[words[0]] = Sign(' '.join(words[1:]))
@@ -85,7 +85,7 @@ class Config:
     @staticmethod
     def loadAllTypeMatchups():
         Game.allTypeMatchups = dict()
-        data = open(Config.datPath + 'matchups.dat')
+        data = open(Config.datPath + 'matchups.dat', 'rU')
         text = data.readlines()
 
         # loads super effective and ineffective for each defined type
@@ -101,7 +101,7 @@ class Config:
     def loadAllMoves():
         Game.allMoves = dict()
 
-        moves = open(Config.datPath + 'moves.dat')
+        moves = open(Config.datPath + 'moves.dat', 'rU')
         moveList = moves.readlines()
         moves.close()
 
@@ -130,7 +130,7 @@ class Config:
     def loadAllHolomon():
         Game.allHolomon = dict()
         
-        holomon = open(Config.datPath + 'holomon.dat')
+        holomon = open(Config.datPath + 'holomon.dat', 'rU')
         holomonList = holomon.readlines()
         holomon.close()
 
@@ -179,7 +179,7 @@ class Config:
         Game.allPersons['engineer'] = Engineer()
         Game.allPersons['shopowner'] = Shopowner()
 
-        persons = open(Config.datPath + 'persons.dat')
+        persons = open(Config.datPath + 'persons.dat', 'rU')
         personList = persons.readlines()
         persons.close()
 
@@ -187,7 +187,7 @@ class Config:
         for line in xrange(0, len(personList), 4): # 5 lines in each trainer description (inc \n)
             Config.loadPerson(personList, line)
 
-        trainers = open(Config.datPath + 'trainers.dat')
+        trainers = open(Config.datPath + 'trainers.dat', 'rU')
         trainerList = trainers.readlines()
         trainers.close()
 
@@ -225,7 +225,7 @@ class Config:
     @staticmethod
     def loadAllAreaMaps():
         Game.allAreaMaps = dict()
-        maps = open(Config.datPath + 'areamaps.dat')
+        maps = open(Config.datPath + 'areamaps.dat', 'rU')
         mapsList = maps.readlines()
         maps.close()
 
@@ -253,7 +253,7 @@ class Config:
     @staticmethod
     def loadAllItems():
         Game.allItems = dict()
-        items = open(Config.datPath + 'items.dat')
+        items = open(Config.datPath + 'items.dat', 'rU')
 
         # load items and info
         for line in items:
@@ -266,7 +266,7 @@ class Config:
         items.close()
 
         # load cards and info
-        cards = open(Config.datPath + 'cards.dat')
+        cards = open(Config.datPath + 'cards.dat', 'rU')
         for line in cards:
             cardList = line.split()
             name = cardList[0]
@@ -279,7 +279,7 @@ class Config:
     def loadExitLinks():
         # create dict of links between map exits to be used in game
         Game.exitLinks = dict()
-        exits = open(Config.datPath + 'exitlinks.dat')
+        exits = open(Config.datPath + 'exitlinks.dat', 'rU')
 
         for line in exits:
             words = line.split()
@@ -869,7 +869,7 @@ class Player(pygame.sprite.Sprite):
 
     def load(self):
         # parse data from save file and create player based on it
-        data = open(Config.savePath + 'player.sav')
+        data = open(Config.savePath + 'player.sav', 'rU')
         text = data.readlines()
         self.areaMap.grid[self.row][self.col].person = None # remove original
         self.name = text[0].strip().split()[1]
@@ -902,7 +902,7 @@ class Player(pygame.sprite.Sprite):
 
     def loadHolomon(self):
         # parse holomon in party and pc from file and add to player data
-        data = open(Config.savePath + 'holomon.sav')
+        data = open(Config.savePath + 'holomon.sav', 'rU')
         text = data.readlines()
         line = 0
         party = []
