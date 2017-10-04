@@ -1,10 +1,12 @@
-# Finn Weber
-# jfweber
-# 35 hours
+# Holomon Game Framework
+# Created by Finn Weber for CMU's CS 15-112 in Summer 2015
 
 import pygame, string, copy, random, sys, os, eztext
 # EZTEXT is not my code or work. It was found at http://www.pygame.org/project-EzText-920-.html
 # most formulas are from bulbapedia/the Pokemon series games by Nintendo
+
+assert sys.version_info < (3,0)
+# Only compatible with Python 2.7.x
 
 class Config:
     # Config class holds setup functions and info about the system
