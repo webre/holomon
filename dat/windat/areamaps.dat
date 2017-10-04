@@ -1,0 +1,27 @@
+map Bedroom
+tallgrass1       tallgrass1 tallgrass1 tallgrass1 shortgrass tallgrass1 shortgrass    tallgrass1
+shortgrass       shortgrass tallgrass1 tallgrass1 tallgrass1 shortgrass tallgrass1    shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass tallgrass1 shortgrass    tallgrass1
+shortgrass       shortgrass shortgrass_sign0 shortgrass shortgrass shortgrass shortgrass    shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass    shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass_engineer shortgrass_shopowner shortgrass_pc tallgrass1
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass    shortgrass
+exitdown_exit9 tallgrass1 tallgrass1 tallgrass1 tallgrass1 tallgrass1 tallgrass1    tallgrass1
+
+map Large
+exitup_exit5 shortgrass tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0          tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 
+shortgrass       shortgrass tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0      tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0
+shortgrass       shortgrass shortgrass shortgrass tallgrass0 tallgrass0 tallgrass0 tallgrass0      tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass      tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0 tallgrass0
+shortgrass       shortgrass shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence shortgrass_fence
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass_Red shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass_Victor shortgrass       shortgrass_Dave       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass_Joey tallgrass0 shortgrass shortgrass shortgrass shortgrass       shortgrass_counter       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass tallgrass0 shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass
+shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass       shortgrass       shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass shortgrass

@@ -1,0 +1,23 @@
+name Flare
+description Summons a weak burst of flame and throws it at the opponent
+power 40
+accuracy 90
+holoType FIRE
+moveType special
+PP 30
+
+name Sideswipe
+description Strikes the opponent suddenly and surprisingly from the side
+power 50
+accuracy 100
+holoType NORMAL
+moveType physical
+PP 35
+
+name Leafcutter
+description Slices at the opponent with sharp leaves and thorns
+power 35
+accuracy 100
+holoType GRASS
+moveType physical
+PP 30
