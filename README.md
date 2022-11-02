@@ -1,7 +1,7 @@
 # Holomon
 This is a pokemon-style game framework I created as my final project CMU's CS 15-112 class in Summer 2015.
 
-See here for a video demonstration of the sample game setup included in this repo.
+[See here for a video demonstration](https://youtu.be/ksouCLRJjFU) of the sample game setup included in this repo.
 
 This program will only work in Python 3.x.
 
