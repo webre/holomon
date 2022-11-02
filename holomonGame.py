@@ -1,12 +1,12 @@
 # Holomon Game Framework
-# Created by Finn Weber for CMU's CS 15-112 in Summer 2015
+# Created by Alyssa Weber for CMU's CS 15-112 in Summer 2015
 
 import pygame, string, copy, random, sys, os, eztext
 # EZTEXT is not my code or work. It was found at http://www.pygame.org/project-EzText-920-.html
 # most formulas are from bulbapedia/the Pokemon series games by Nintendo
 
-assert sys.version_info < (3,0)
-# Only compatible with Python 2.7.x
+# november 2022: updated to run in python 3, originally designed in python 2.7
+# pygame is difficult to install on modern macs, tested on windows instead
 
 class Config:
     # Config class holds setup functions and info about the system
@@ -35,7 +35,7 @@ class Config:
     @staticmethod
     def loadAllBlocks():
         Game.allBlocks = dict()
-        blocks = open(Config.datPath + 'blockimages.dat', 'rU')
+        blocks = open(Config.datPath + 'blockimages.dat', 'r', newline=None)
 
         for line in blocks:
             words = line.split()
@@ -43,14 +43,14 @@ class Config:
             Game.allBlocks[words[0]] = Block(Config.blockPath + words[1])
 
         blocks.close()
-        tallgrasses = open(Config.datPath + 'tallgrasses.dat', 'rU')
+        tallgrasses = open(Config.datPath + 'tallgrasses.dat', 'r', newline=None)
         
         for line in tallgrasses:
             words = line.split()
             name = words[0]
             occurrences = []
 
-            for index in xrange(1, len(words) - 1, 2):
+            for index in range(1, len(words) - 1, 2):
                 # first term is holomon name, second is % occurrence
                 occurrences.append((words[index], float(words[index + 1])))
 
@@ -65,7 +65,7 @@ class Config:
         Game.allBlockItems = dict()
 
         # load name and image of all block items
-        blockItems = open(Config.datPath + 'blockitemimages.dat', 'rU')
+        blockItems = open(Config.datPath + 'blockitemimages.dat', 'r', newline=None)
         for line in blockItems:
             words = line.split()
             Game.allBlockItems[words[0]] = BlockItem(Config.blockItemPath + \
@@ -74,7 +74,7 @@ class Config:
         blockItems.close()
 
         # load defined signs
-        signs = open(Config.datPath + 'signtext.dat', 'rU')
+        signs = open(Config.datPath + 'signtext.dat', 'r', newline=None)
         for line in signs:
             words = line.split()
             Game.allBlockItems[words[0]] = Sign(' '.join(words[1:]))
@@ -87,11 +87,11 @@ class Config:
     @staticmethod
     def loadAllTypeMatchups():
         Game.allTypeMatchups = dict()
-        data = open(Config.datPath + 'matchups.dat', 'rU')
+        data = open(Config.datPath + 'matchups.dat', 'r', newline=None)
         text = data.readlines()
 
         # loads super effective and ineffective for each defined type
-        for index in xrange(0, len(text) - 1, 2):
+        for index in range(0, len(text) - 1, 2):
             first = text[index].strip().split()
             second = text[index + 1].strip().split()
             Game.allTypeMatchups[first[0]] = dict()
@@ -103,12 +103,12 @@ class Config:
     def loadAllMoves():
         Game.allMoves = dict()
 
-        moves = open(Config.datPath + 'moves.dat', 'rU')
+        moves = open(Config.datPath + 'moves.dat', 'r', newline=None)
         moveList = moves.readlines()
         moves.close()
 
         # 8 lines between input blocks including space line
-        for line in xrange(0, len(moveList), 8):
+        for line in range(0, len(moveList), 8):
             Config.loadMove(moveList, line)
 
         Game.allMoves['default'] = Move('Struggle', 'Used when out of PP',
@@ -132,12 +132,12 @@ class Config:
     def loadAllHolomon():
         Game.allHolomon = dict()
         
-        holomon = open(Config.datPath + 'holomon.dat', 'rU')
+        holomon = open(Config.datPath + 'holomon.dat', 'r', newline=None)
         holomonList = holomon.readlines()
         holomon.close()
 
         # 8 lines between input blocks including space line
-        for line in xrange(0, len(holomonList), 8):
+        for line in range(0, len(holomonList), 8):
             Config.loadHolomon(holomonList, line)
 
     @staticmethod
@@ -161,7 +161,7 @@ class Config:
         moveset = dict()
         for word in movesetList:
             moveID = word.strip(string.digits)
-            level = int(word.strip(string.letters))
+            level = int(word.strip(string.ascii_letters))
             moveset[level] = Game.allMoves[moveID].generate()
         return moveset
 
@@ -171,7 +171,7 @@ class Config:
         baseStats = dict()
         for word in baseStatsList:
             statName = word.strip(string.digits)
-            value = int(word.strip(string.letters))
+            value = int(word.strip(string.ascii_letters))
             baseStats[statName] = value
         return baseStats
 
@@ -181,20 +181,20 @@ class Config:
         Game.allPersons['engineer'] = Engineer()
         Game.allPersons['shopowner'] = Shopowner()
 
-        persons = open(Config.datPath + 'persons.dat', 'rU')
+        persons = open(Config.datPath + 'persons.dat', 'r', newline=None)
         personList = persons.readlines()
         persons.close()
 
         # load defined characters from file
-        for line in xrange(0, len(personList), 4): # 5 lines in each trainer description (inc \n)
+        for line in range(0, len(personList), 4): # 5 lines in each trainer description (inc \n)
             Config.loadPerson(personList, line)
 
-        trainers = open(Config.datPath + 'trainers.dat', 'rU')
+        trainers = open(Config.datPath + 'trainers.dat', 'r', newline=None)
         trainerList = trainers.readlines()
         trainers.close()
 
         # load defined trainers from file
-        for line in xrange(0, len(trainerList), 6): # 7 lines in each trainer description (inc \n)
+        for line in range(0, len(trainerList), 6): # 7 lines in each trainer description (inc \n)
             Config.loadTrainer(trainerList, line)
 
     @staticmethod
@@ -218,7 +218,7 @@ class Config:
         party = []
         for holomonID in trainerList[line + 4].strip().split()[1:]:
             holomonName = holomonID.strip(string.digits)
-            level = int(holomonID.strip(string.letters))
+            level = int(holomonID.strip(string.ascii_letters))
             party.append(Game.allHolomon[holomonName].generate(level))
 
         trainer = Trainer(name, text, loseText, direction, party)
@@ -227,7 +227,7 @@ class Config:
     @staticmethod
     def loadAllAreaMaps():
         Game.allAreaMaps = dict()
-        maps = open(Config.datPath + 'areamaps.dat', 'rU')
+        maps = open(Config.datPath + 'areamaps.dat', 'r', newline=None)
         mapsList = maps.readlines()
         maps.close()
 
@@ -255,7 +255,7 @@ class Config:
     @staticmethod
     def loadAllItems():
         Game.allItems = dict()
-        items = open(Config.datPath + 'items.dat', 'rU')
+        items = open(Config.datPath + 'items.dat', 'r', newline=None)
 
         # load items and info
         for line in items:
@@ -268,7 +268,7 @@ class Config:
         items.close()
 
         # load cards and info
-        cards = open(Config.datPath + 'cards.dat', 'rU')
+        cards = open(Config.datPath + 'cards.dat', 'r', newline=None)
         for line in cards:
             cardList = line.split()
             name = cardList[0]
@@ -281,14 +281,14 @@ class Config:
     def loadExitLinks():
         # create dict of links between map exits to be used in game
         Game.exitLinks = dict()
-        exits = open(Config.datPath + 'exitlinks.dat', 'rU')
+        exits = open(Config.datPath + 'exitlinks.dat', 'r', newline=None)
 
         for line in exits:
             words = line.split()
             exit = words[1]
             info = []
 
-            for index in xrange(3, len(words), 2):
+            for index in range(3, len(words), 2):
                 info.append(words[index])
 
             Game.exitLinks[exit] = info
@@ -384,7 +384,7 @@ class Menu:
                     xClick, yClick = event.pos
                     if yClick >= yStart and yClick < yStart + len(choices) * \
                                                               height:
-                        selection = int(yClick - yStart) / int(height)
+                        selection = int(yClick - yStart) // int(height)
                         selection = int(selection)
                         if xClick >= xStart and xClick <= xStart + \
                                 Game.font.size(choices[selection])[0]:
@@ -418,14 +418,14 @@ class Menu:
         rectangle = pygame.Rect(x, y, width, height)
         game.screen.fill(Game.white, rectangle)
 
-        pygame.draw.line(game.screen, Game.black, [0, y + height / 2],
-                                                  [width, y + height / 2])
-        pygame.draw.line(game.screen, Game.black, [width / 2, y],
-                                                  [width / 2, Game.height])
+        pygame.draw.line(game.screen, Game.black, [0, y + height // 2],
+                                                  [width, y + height // 2])
+        pygame.draw.line(game.screen, Game.black, [width // 2, y],
+                                                  [width // 2, Game.height])
 
         if backButton:
             backSize = Game.font.size('Back')
-            backRect = pygame.Rect((width - backSize[0]) / 2, Game.height - \
+            backRect = pygame.Rect((width - backSize[0]) // 2, Game.height - \
                                     backSize[1], backSize[0], backSize[1])
             backRect.center = rectangle.center
             pygame.draw.rect(game.screen, Game.white, backRect)
@@ -441,18 +441,18 @@ class Menu:
         width = Game.width
         height = int(Game.height * Game.textBoxRatio)
         y = int(Game.height * (1 - Game.textBoxRatio))
-        center = [width / 4, y + height / 4]
+        center = [width // 4, y + height // 4]
 
         for row in words:
             for word in row:
                 size = Game.font.size(word)
                 surface = Game.font.render(word, True, Game.black)
-                game.screen.blit(surface, [center[0] - size[0] / 2,
-                                           center[1] - size[1] / 2])
+                game.screen.blit(surface, [center[0] - size[0] // 2,
+                                           center[1] - size[1] // 2])
                 pygame.display.flip()
-                center[0] += width / 2
-            center[1] += height / 2
-            center[0] = width / 4
+                center[0] += width // 2
+            center[1] += height // 2
+            center[0] = width // 4
 
         if backButton:
             surface = Game.font.render('Back', True, Game.black)
@@ -478,8 +478,8 @@ class Menu:
                                                          backRect):
                             selection = 'back'
                         else:
-                            selection = (xClick / (width / 2)) % 2 + \
-                                        ((yClick - y) / (height / 2)) * 2                        
+                            selection = (xClick // (width // 2)) % 2 + \
+                                        ((yClick - y) // (height // 2)) * 2                        
                         if selection < length or selection == 'back':
                             menuOpen = False
             game.clock.tick(Game.fps)
@@ -732,7 +732,7 @@ class Game:
     def switchHolomon(self, holomon):
         # switches holomon in-menu
         index = 0
-        for index in xrange(len(self.player.party)):
+        for index in range(len(self.player.party)):
             if self.player.party[index] == holomon:
                 break
 
@@ -746,7 +746,7 @@ class Game:
 
     def useItem(self, holomon):
         # display items sorted by cost to use on this holomon
-        items = self.player.items.values()
+        items = list(self.player.items.values())
         items = sorted(items, key = lambda item: item.cost)
         itemNames = [item.info() for item in items]
 
@@ -757,7 +757,7 @@ class Game:
 
     def menuItems(self):
         # display items sorted by cost to use on some holomon
-        items = self.player.items.values()
+        items = list(self.player.items.values())
         items = sorted(items, key = lambda item: item.cost)
         itemNames = [item.info() for item in items]
 
@@ -765,7 +765,7 @@ class Game:
 
         while choice != 'back':
             self.useOnWhich(items[choice])
-            items = self.player.items.values()
+            items = list(self.player.items.values())
             items = sorted(items, key = lambda item: item.cost)
             itemNames = [item.info() for item in items]
             choice = Menu.popupMenu(self, itemNames, backButton = True)
@@ -785,7 +785,7 @@ class Game:
         choice = Menu.popupMenu(self, choices, backButton = True)
 
         if choice != 'back' and choices[choice] == 'Continue':
-            for index in xrange(len(self.player.party)):
+            for index in range(len(self.player.party)):
                 if self.player.party[index] == holomon:
                     break
             name = self.player.party.pop(index).name
@@ -793,7 +793,7 @@ class Game:
 
     def menuCards(self):
         # view all cards in inventory
-        cards = self.player.cards.values()
+        cards = list(self.player.cards.values())
         cards = sorted(cards, key = lambda card: card.cost)
         cardNames = [card.info() for card in cards]
 
@@ -831,7 +831,7 @@ class Game:
             index = person
             blockObj.person = Game.allPersons[index].copy()
         elif exit != None:
-            index = exit.strip(string.letters)
+            index = exit.strip(string.ascii_letters)
             blockObj.exit = index
         
         return blockObj    
@@ -871,7 +871,7 @@ class Player(pygame.sprite.Sprite):
 
     def load(self):
         # parse data from save file and create player based on it
-        data = open(Config.savePath + 'player.sav', 'rU')
+        data = open(Config.savePath + 'player.sav', 'r', newline=None)
         text = data.readlines()
         self.areaMap.grid[self.row][self.col].person = None # remove original
         self.name = text[0].strip().split()[1]
@@ -888,12 +888,12 @@ class Player(pygame.sprite.Sprite):
         for word in text[6].strip().split()[1:]:
             name = word.strip(string.digits)
             item = Game.allItems[name].copy()
-            item.quantity = int(word.strip(string.letters))
+            item.quantity = int(word.strip(string.ascii_letters))
             self.items[name] = item
         for word in text[7].strip().split()[1:]:
             name = word.strip(string.digits)
             card = Game.allItems[name].copy()
-            card.quantity = int(word.strip(string.letters))
+            card.quantity = int(word.strip(string.ascii_letters))
             self.cards[name] = card
 
         self.money = int(text[8].strip().split()[1])
@@ -904,7 +904,7 @@ class Player(pygame.sprite.Sprite):
 
     def loadHolomon(self):
         # parse holomon in party and pc from file and add to player data
-        data = open(Config.savePath + 'holomon.sav', 'rU')
+        data = open(Config.savePath + 'holomon.sav', 'r', newline=None)
         text = data.readlines()
         line = 0
         party = []
@@ -921,11 +921,11 @@ class Player(pygame.sprite.Sprite):
             # get moves
             for word in text[line + 4].strip().split()[1:]:
                 move = Game.allMoves[word.strip(string.digits)].generate()
-                move.currentPP = int(word.strip(string.letters))
+                move.currentPP = int(word.strip(string.ascii_letters))
                 holomon.moves.append(move)
 
             holomon.IVs = {word.strip(string.digits): \
-                int(word.strip(string.letters)) for word in \
+                int(word.strip(string.ascii_letters)) for word in \
                 text[line + 5].strip().split()[1:]}
             if not endParty:
                 party.append(holomon)
@@ -1032,8 +1032,8 @@ class Player(pygame.sprite.Sprite):
         exitLink = Game.exitLinks[exit]
         newAreaMap = Game.allAreaMaps[exitLink[0]].copy() # [0] is the new map
 
-        for row in xrange(len(newAreaMap.grid)):
-            for col in xrange(len(newAreaMap.grid[row])):
+        for row in range(len(newAreaMap.grid)):
+            for col in range(len(newAreaMap.grid[row])):
                 # exitLink[1] is entrance number
                 if newAreaMap.grid[row][col].exit == exitLink[1]:
                     self.row = row
@@ -1061,7 +1061,7 @@ class Player(pygame.sprite.Sprite):
         playerPassed = False
 
         # goes through every column in row to respond if sightline isn't broken
-        for col in xrange(len(self.areaMap.grid[self.row])):
+        for col in range(len(self.areaMap.grid[self.row])):
             block = self.areaMap.grid[self.row][col]
             if block.person == self:
                 playerPassed = True
@@ -1079,7 +1079,7 @@ class Player(pygame.sprite.Sprite):
         playerPassed = False
 
         # goes through every row in column to respond if sightline isn't broken
-        for row in xrange(len(self.areaMap.grid)):
+        for row in range(len(self.areaMap.grid)):
             block = self.areaMap.grid[row][self.col]
             if block.person == self:
                 playerPassed = True
@@ -1096,22 +1096,22 @@ class Player(pygame.sprite.Sprite):
     def sightlineFromHere(self, row, col):
         # check sightline, helper for checkPosition(), finds obstructions
         if row == self.row and col < self.col:
-            for col in xrange(col + 1, self.col):
+            for col in range(col + 1, self.col):
                 block = self.areaMap.grid[row][col]
                 if block.person != None or block.blockItem != None:
                     return False
         elif row == self.row and col > self.col:
-            for col in xrange(self.col + 1, col):
+            for col in range(self.col + 1, col):
                 block = self.areaMap.grid[row][col]
                 if block.person != None or block.blockItem != None:
                     return False
         elif col == self.col and row < self.row:
-            for row in xrange(row + 1, self.row):
+            for row in range(row + 1, self.row):
                 block = self.areaMap.grid[row][col]
                 if block.person != None or block.blockItem != None:
                     return False
         elif col == self.col and row > self.row:
-            for row in xrange(self.row + 1, row):
+            for row in range(self.row + 1, row):
                 block = self.areaMap.grid[row][col]
                 if block.person != None or block.blockItem != None:
                     return False
@@ -1143,10 +1143,10 @@ class AreaMap:
         else:
             self.grid = []
 
-            for row in xrange(len(mapInput)):
+            for row in range(len(mapInput)):
                 gridLine = []
 
-                for col in xrange(len(mapInput[row])):
+                for col in range(len(mapInput[row])):
                     block = mapInput[row][col]
                     result = self.processBlockInput(block)
                     # setting bottom of rect so add extra block below row
@@ -1187,10 +1187,10 @@ class AreaMap:
         # makes a deep copy of areamap and returns it 
         newGrid = []
 
-        for row in xrange(len(self.grid)):
+        for row in range(len(self.grid)):
             gridLine = []
 
-            for col in xrange(len(self.grid[row])):
+            for col in range(len(self.grid[row])):
                 block = self.grid[row][col]
                 result = block.copy()
                 # setting bottom of rect so add extra block below row
@@ -1357,7 +1357,7 @@ class PC(BlockItem):
     def withdraw(self, player):
         # withdraw menu for pc
         boxes = self.initBoxes(player.PCList)
-        boxNames = ['Box %d' % (index + 1) for index in xrange(len(boxes))]
+        boxNames = ['Box %d' % (index + 1) for index in range(len(boxes))]
         choice = Menu.popupMenu(player.game, boxNames, backButton = True)
         if choice != 'back':
             self.whichWithdraw(player, boxes, choice)
@@ -1991,10 +1991,10 @@ class Battle:
     def pickItem(self):
         # pick item to use
         if self.battleType == 'trainer':
-            items = copy.deepcopy(self.player.items.values())
+            items = copy.deepcopy(list(self.player.items.values()))
         else:
-            items = copy.deepcopy(self.player.items.values() + \
-                self.player.cards.values())
+            items = copy.deepcopy(list(self.player.items.values()) + \
+                list(self.player.cards.values()))
 
         items = sorted(items, key = lambda item: item.cost)
         itemNames = [item.info() for item in items]
@@ -2068,7 +2068,7 @@ class Battle:
             enemySpeed = self.enemyOut.getStat('speed')
             enemySpeed += 1 if enemySpeed == 0 else 0
             escapeProbability = (self.friendlyOut.getStat('speed') * \
-                128 / enemySpeed + 30 * self.escapes) % 256
+                128 // enemySpeed + 30 * self.escapes) % 256
             self.escapes += 1
             self.run = random.randint(0, 255) < escapeProbability
             self.runFailed = not self.run
@@ -2174,25 +2174,25 @@ class Battle:
         game.screen.fill(Game.white, [0, (1 - Game.textBoxRatio) * Game.height, Game.width, Game.textBoxRatio * Game.height])
         self.drawOvals()
         self.drawHolomon()
-        self.drawInfoBox(self.friendlyOut, Game.width / 4)
-        self.drawInfoBox(self.enemyOut, 3 * Game.width / 4, XP = False)
+        self.drawInfoBox(self.friendlyOut, Game.width // 4)
+        self.drawInfoBox(self.enemyOut, 3 * Game.width // 4, XP = False)
         pygame.display.flip()
 
     def drawOvals(self):
         # ovals for holomon to stand on
         rectangle = pygame.Rect(0, 0, Game.width * .4, Game.height * .2)
-        rectangle.centery = Game.height / 2 + 10
-        rectangle.centerx = Game.width / 4
+        rectangle.centery = Game.height // 2 + 10
+        rectangle.centerx = Game.width // 4
         pygame.draw.ellipse(self.player.game.screen, Game.paleGreen, rectangle)
-        rectangle.centerx += Game.width / 2
+        rectangle.centerx += Game.width // 2
         pygame.draw.ellipse(self.player.game.screen, Game.paleGreen, rectangle)
 
     def drawHolomon(self):
         # draw holomon on ovals
-        self.friendlyOut.rect.centerx = Game.width / 4
-        self.friendlyOut.rect.bottom = Game.height / 2 + 10
-        self.enemyOut.rect.centerx = 3 * Game.width / 4
-        self.enemyOut.rect.bottom = Game.height / 2 + 10
+        self.friendlyOut.rect.centerx = Game.width // 4
+        self.friendlyOut.rect.bottom = Game.height // 2 + 10
+        self.enemyOut.rect.centerx = 3 * Game.width // 4
+        self.enemyOut.rect.bottom = Game.height // 2 + 10
         self.friendlyOut.draw(game.screen)
         self.enemyOut.draw(game.screen)
 
